@@ -48,8 +48,9 @@ app.get('/roomsData', function (req, res) {
 });
 
 var adminCode = opts.code || 'admin';
+Room.setConfig(adminCode);
 for (var i = 0; i < (opts.room || 1); i++) {
-	Room.createRoom("大乱斗", true);
+    var room = Room.createRoom("大乱斗", true);
 }
 
 wss.on('connection', function (ws) {

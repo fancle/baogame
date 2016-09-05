@@ -18,7 +18,12 @@ var socket = {
 					var name = str;
 				} else {
 					var name = str.substring(0, $s);
+				    try{
 					var data = JSON.parse(str.substring($s + 1));
+				    }catch(err){
+ 				      console.info(str);					
+				    }
+
 				}
 				_this.listeners[name] && _this.listeners[name](data);
 			}
