@@ -1,4 +1,4 @@
-var Sign = function (game, data) {
+var Sign = function (game, map, data) {
 	this.id = data.id;
 	this.x = data.x;
 	this.y = data.y;

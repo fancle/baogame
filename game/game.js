@@ -10,7 +10,22 @@ var Client = require('./client.js');
 
 var map1 = require('./maps/lesson1.js');
 var map2 = require('./maps/lesson2.js');
+var gunmap = require('./maps/gunmapdata.js');
+var drugmap = require('./maps/drugmapdata.js');
 
+function getMapDataByType(type){
+    if(type == "lesson1"){
+	return map1;
+    } else if(type == "lesson2"){
+	return map2;
+    } else if(type == "gunmap"){
+	return gunmap;
+    } else if(type == "drugmap"){
+	return drugmap;
+    } else {
+	return null;
+    }
+}
 
 function userCollide(a, b, game) {
 	//不碰撞情况
@@ -20,173 +35,174 @@ function userCollide(a, b, game) {
 	//带电情况
 	if (a.carry == Pack.items.power.id && b.carry != Pack.items.power.id) {
 		b.killed('power', a);
-		b.vx = (b.x - a.x)/2;
-		if (b.carry == Pack.items.bomb.id) {
-			a.carry = b.carry;
-			a.carryCount = b.carryCount;
-			b.carry = '';
-		}
-		return;
-	} else if (a.carry != Pack.items.power.id && b.carry == Pack.items.power.id) {
-		a.killed('power', b);
-		a.vx = (a.x - b.x)/2;
-		if (a.carry == Pack.items.bomb.id) {
-			b.carry = a.carry;
-			b.carryCount = a.carryCount;
-			a.carry = '';
-		}
-		return;
-	} else if (a.carry == Pack.items.power.id && b.carry == Pack.items.power.id) {
-		a.carry = '';
-		b.carry = '';
-	}
-	//排除刚刚碰撞
-	if (a.ignore[b.id] > 0 || b.ignore[a.id] > 0) {return}
-	
-	if (b.carry == Pack.items.bomb.id && a.carry != Pack.items.bomb.id) {
+	    b.vx = (b.x - a.x)/2;
+	    if (b.carry == Pack.items.bomb.id) {
 		a.carry = b.carry;
 		a.carryCount = b.carryCount;
 		b.carry = '';
-	} else if (a.carry == Pack.items.bomb.id && b.carry != Pack.items.bomb.id) {
+	    }
+	    return;
+	} else if (a.carry != Pack.items.power.id && b.carry == Pack.items.power.id) {
+	    a.killed('power', b);
+	    a.vx = (a.x - b.x)/2;
+	    if (a.carry == Pack.items.bomb.id) {
 		b.carry = a.carry;
 		b.carryCount = a.carryCount;
 		a.carry = '';
+	    }
+	    return;
+	} else if (a.carry == Pack.items.power.id && b.carry == Pack.items.power.id) {
+	    a.carry = '';
+	    b.carry = '';
 	}
-	//正常情况
-	if (a.onFloor && b.onFloor) {
-		if (a.crawl && !b.crawl) {
-			b.vy = 5;
-			b.danger = true;
-		} else if (!a.crawl && b.crawl) {
-			a.vy = 5;
-			a.danger = true;
-		} else {
-			if (a.crawl && b.crawl) {
-				a.crawl = false;
-				b.crawl = false;
-			}
-			var tmp = a.vx;
-			a.vx = b.vx;
-			b.vx = tmp;
-			
-			a.vy = 2.5;
-			b.vy = 2.5;
-		}
-	} else if (a.onFloor && !b.onFloor) {
-		if (a.crawl) {
-			a.vx = b.vx / 2;
-			b.vx = -b.vx / 2;
-			a.vy = 2.5;
-			b.vy = 2.5;
-		} else {
-			a.vx = b.vx;
-			b.vx /= 2;
-			a.vy = 2.5;
-			a.danger = true;
-		}
-	} else if (!a.onFloor && b.onFloor) {
-		if (b.crawl) {
-			b.vx = a.vx / 2;
-			a.vx = -a.vx / 2;
-			b.vy = 2.5;
-			a.vy = 2.5;
-		} else {
-			b.vx = a.vx;
-			a.vx /= 2;
-			b.vy = 2.5;
-			b.danger = true;
-		}
+    //排除刚刚碰撞
+    if (a.ignore[b.id] > 0 || b.ignore[a.id] > 0) {return}
+    
+    if (b.carry == Pack.items.bomb.id && a.carry != Pack.items.bomb.id) {
+	a.carry = b.carry;
+	a.carryCount = b.carryCount;
+	b.carry = '';
+    } else if (a.carry == Pack.items.bomb.id && b.carry != Pack.items.bomb.id) {
+	b.carry = a.carry;
+	b.carryCount = a.carryCount;
+	a.carry = '';
+    }
+    //正常情况
+    if (a.onFloor && b.onFloor) {
+	if (a.crawl && !b.crawl) {
+	    b.vy = 5;
+	    b.danger = true;
+	} else if (!a.crawl && b.crawl) {
+	    a.vy = 5;
+	    a.danger = true;
 	} else {
-		var tmp = a.vx;
-		a.vx = b.vx;
-		b.vx = tmp;
-		a.danger = true;
-		b.danger = true;
+	    if (a.crawl && b.crawl) {
+		a.crawl = false;
+		b.crawl = false;
+	    }
+	    var tmp = a.vx;
+	    a.vx = b.vx;
+	    b.vx = tmp;
+	    
+	    a.vy = 2.5;
+	    b.vy = 2.5;
 	}
-	//自然抗拒
-	if (a.x < b.x) {
-		if (!a.crawl) {
-			a.vx -= 1;
-		}
-		if (!b.crawl) {
-			b.vx += 1;
-		}
+    } else if (a.onFloor && !b.onFloor) {
+	if (a.crawl) {
+	    a.vx = b.vx / 2;
+	    b.vx = -b.vx / 2;
+	    a.vy = 2.5;
+	    b.vy = 2.5;
 	} else {
-		if (!a.crawl) {
-			a.vx += 1;
-		}
-		if (!b.crawl) {
-			b.vx -= 1;
-		}
+	    a.vx = b.vx;
+	    b.vx /= 2;
+	    a.vy = 2.5;
+	    a.danger = true;
 	}
-	//阻止近期碰撞
-	a.ignore[b.id] = 40;
-	b.ignore[a.id] = 40;
-	a.fireing = false;
-	b.fireing = false;
-	a.mining = false;
-	b.mining = false;
-	a.onPilla = false;
-	b.onPilla = false;
-	a.lastTouch = b.id;
-	b.lastTouch = a.id;
+    } else if (!a.onFloor && b.onFloor) {
+	if (b.crawl) {
+	    b.vx = a.vx / 2;
+	    a.vx = -a.vx / 2;
+	    b.vy = 2.5;
+	    a.vy = 2.5;
+	} else {
+	    b.vx = a.vx;
+	    a.vx /= 2;
+	    b.vy = 2.5;
+	    b.danger = true;
+	}
+    } else {
+	var tmp = a.vx;
+	a.vx = b.vx;
+	b.vx = tmp;
+	a.danger = true;
+	b.danger = true;
+    }
+    //自然抗拒
+    if (a.x < b.x) {
+	if (!a.crawl) {
+	    a.vx -= 1;
+	}
+	if (!b.crawl) {
+	    b.vx += 1;
+	}
+    } else {
+	if (!a.crawl) {
+	    a.vx += 1;
+	}
+	if (!b.crawl) {
+	    b.vx -= 1;
+	}
+    }
+    //阻止近期碰撞
+    a.ignore[b.id] = 40;
+    b.ignore[a.id] = 40;
+    a.fireing = false;
+    b.fireing = false;
+    a.mining = false;
+    b.mining = false;
+    a.onPilla = false;
+    b.onPilla = false;
+    a.lastTouch = b.id;
+    b.lastTouch = a.id;
 }
 
 function eatItem (a, b, game) {
-	if (a.dead || b.dead) {return}
-	if (a.carry == Pack.items.bomb.id) {return}
-	if((a.x-b.x)*(a.x-b.x) + (a.y+game.props.userHeight/2-b.y)*(a.y+game.props.userHeight/2-b.y) >
-			(game.props.userWidth+C.IS)*(game.props.userWidth+C.IS)/4) {
-		return;
-	}
-	b.touchUser(a);
+    if (a.dead || b.dead) {return}
+    if (a.carry == Pack.items.bomb.id) {return}
+    if((a.x-b.x)*(a.x-b.x) + (a.y+game.props.userHeight/2-b.y)*(a.y+game.props.userHeight/2-b.y) >
+       (game.props.userWidth+C.IS)*(game.props.userWidth+C.IS)/4) {
+	return;
+    }
+    b.touchUser(a);
 }
 
 var Game = function (adminCode, maxUser, type, remove) {
-	this.adminCode = adminCode;
-	this.users = [];
-	this.clients = [];
-	this.items = [];
-	this.bodies = [];
-	this.mines = [];
-	this.entitys = [];
-	this.tick = 0;
-	this.remove = remove;
-	this.props = {
-		userHeight: 40,
-		userWidth: 40,
-		itemSize: 15,
-		tw: 28,
-		th: 15,
-		maxUser: maxUser,
-	}
-	if (type == "lesson1") {
-		this.props.th = map1.h;
-		this.props.tw = map1.w;
-	} else if (type == "lesson2") {
-		this.props.th = map2.h;
-		this.props.tw = map2.w;
-	}
-	this.props.w = this.props.tw * C.TW;
-	this.props.h = this.props.th * C.TH;
-	
-	if (type == "lesson1") {
-		this.map = new Map(this, map1);
-	} else if (type == "lesson2") {
-		this.map = new Map(this, map2);
-	} else {
-		this.map = new Map(this);
-	}
-	this.runningTimer = setInterval(() => {
-		this.update();
-	}, 17);
-}
+    this.adminCode = adminCode;
+    this.users = [];
+    this.clients = [];
+    this.items = [];
+    this.bodies = [];
+    this.mines = [];
+    this.entitys = [];
+    this.tick = 0;
+    this.remove = remove;
+    this.props = {
+	userHeight: 40,
+	userWidth: 40,
+	itemSize: 15,
+	tw: 28,
+	th: 15,
+	maxUser: maxUser
+    };
+    var mapData = getMapDataByType(type);
+    
+    if(mapData){
+	if(mapData.h)this.props.th = mapData.h;
+	if(mapData.w)this.props.tw = mapData.w;
+    }
+    
+    this.props.w = this.props.tw * C.TW;
+    this.props.h = this.props.th * C.TH;
+
+    if(mapData){
+	this.map = new Map(this, mapData);
+    } else {
+	this.map = new Map(this);
+    }
+
+    this.runningTimer = setInterval(() => {
+	this.update();
+    }, 17);
+};
+
 Game.prototype.createNPC = function (data) {
 	var u = new User(this, data);
 	u.npc = true;
 	this.users.push(u);
 	return u;
-}
+};
+
 //增加玩家
 Game.prototype.createUser = function (client) {
 	var u = new User(this, client);

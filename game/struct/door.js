@@ -2,7 +2,7 @@
 
 var C = require('../../static/js/const.js');
 
-var Door = function (game, data) {
+var Door = function (game, map, data) {
 	this.id = data.id;
 	this.x = data.x;
 	this.y = data.y;
