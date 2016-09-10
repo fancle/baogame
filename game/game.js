@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 var Pack = require('../static/js/JPack.js');
 var C = require('../static/js/const.js');
 
@@ -8,24 +8,11 @@ var User = require('./user.js');
 var Item = require('./item.js');
 var Client = require('./client.js');
 
-var map1 = require('./maps/lesson1.js');
-var map2 = require('./maps/lesson2.js');
-var gunmap = require('./maps/gunmapdata.js');
-var drugmap = require('./maps/drugmapdata.js');
-
-function getMapDataByType(type){
-    if(type == "lesson1"){
-	return map1;
-    } else if(type == "lesson2"){
-	return map2;
-    } else if(type == "gunmap"){
-	return gunmap;
-    } else if(type == "drugmap"){
-	return drugmap;
-    } else {
-	return null;
-    }
-}
+//var map1 = require('./maps/lesson1.js');
+//var map2 = require('./maps/lesson2.js');
+//var gunmap = require('./maps/gunmapdata.js');
+//var drugmap = require('./maps/drugmapdata.js');
+var MapGlobal = require('./maps/MapGlobal.js');
 
 function userCollide(a, b, game) {
 	//不碰撞情况
@@ -175,7 +162,7 @@ var Game = function (adminCode, maxUser, type, remove) {
 	th: 15,
 	maxUser: maxUser
     };
-    var mapData = getMapDataByType(type);
+    var mapData = MapGlobal.getMapDataByType(type);
     
     if(mapData){
 	if(mapData.h)this.props.th = mapData.h;

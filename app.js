@@ -21,7 +21,7 @@ app.use('/static', express.static('static'));
 
 //游戏地址
 app.get('/', function (req, res) {
-	res.sendFile(__dirname + '/static/index.html');
+	res.sendFile(__dirname + '/static/rooms.html');
 });
 //游戏地址
 app.get('/game', function (req, res) {
@@ -29,7 +29,7 @@ app.get('/game', function (req, res) {
 });
 //游戏地址
 app.get('/rooms', function (req, res) {
-	res.sendFile(__dirname + '/static/index.html');
+	res.sendFile(__dirname + '/static/rooms.html');
 });
 //管理地址
 app.get('/admin', function (req, res) {
@@ -53,9 +53,12 @@ app.get('/roomsData', function (req, res) {
 
 var adminCode = opts.code || 'admin';
 Room.setConfig(adminCode);
+
 for (var i = 0; i < (opts.room || 1); i++) {
-    var room = Room.createRoom("大乱斗", true);
+    Room.createRoom("暴走乱斗", true);
 }
+Room.createRoom("gunmap",true);
+Room.createRoom("drugmap",true);
 
 wss.on('connection', function (ws) {
 	var location = url.parse(ws.upgradeReq.url, true);
