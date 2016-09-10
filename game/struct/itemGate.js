@@ -56,32 +56,34 @@ var ItemGate = function (game, map, data) {
 };
 
 ItemGate.prototype.update = function () {
-    if (this.itemType !== undefined) {
-	if ((this.game.tick + 120) % 150 == 0 && (!this.targetItem || this.targetItem.dead)) {
-	    var type = this.itemType;
-	    if(Array.isArray(type) && type.length>0){
-		type = type[Math.floor(Math.random()*type.length)];
+    if(this.game.users.length>0){
+	if (this.itemType !== undefined) {
+	    if ((this.game.tick + 120) % 150 == 0 && (!this.targetItem || this.targetItem.dead)) {
+		var type = this.itemType;
+		if(Array.isArray(type) && type.length>0){
+		    type = type[Math.floor(Math.random()*type.length)];
+		}
+		var item;
+		if(!isNaN(parseInt(type))){
+		    item = this.game.createItem(type);
+		}else{
+		    item = this.game.createItem();
+		}
+		item.x = (this.x + .5) * C.TW;
+		item.y = (this.y + .5) * C.TH;
+		if(!this.isItemFloat){
+		    item.vx = 0;
+		    item.vy = 0;
+		}
+		this.targetItem = item;
 	    }
-	    var item;
-	    if(!isNaN(parseInt(type))){
-		item = this.game.createItem(type);
-	    }else{
-		item = this.game.createItem();
+	} else {
+	    //生成物品（如果需要）
+	    if (this.game.items.length < this.game.users.length && Math.random() * 100 < this.game.users.length) {
+		var item = this.game.createItem();
+		item.x = (this.x + .5) * C.TW;
+		item.y = (this.y + .5) * C.TH;
 	    }
-	    item.x = (this.x + .5) * C.TW;
-	    item.y = (this.y + .5) * C.TH;
-	    if(!this.isItemFloat){
-		item.vx = 0;
-		item.vy = 0;
-	    }
-	    this.targetItem = item;
-	}
-    } else {
-	//生成物品（如果需要）
-	if (this.game.items.length < this.game.users.length && Math.random() * 100 < this.game.users.length) {
-	    var item = this.game.createItem();
-	    item.x = (this.x + .5) * C.TW;
-	    item.y = (this.y + .5) * C.TH;
 	}
     }
 };

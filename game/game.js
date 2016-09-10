@@ -8,10 +8,6 @@ var User = require('./user.js');
 var Item = require('./item.js');
 var Client = require('./client.js');
 
-//var map1 = require('./maps/lesson1.js');
-//var map2 = require('./maps/lesson2.js');
-//var gunmap = require('./maps/gunmapdata.js');
-//var drugmap = require('./maps/drugmapdata.js');
 var MapGlobal = require('./maps/MapGlobal.js');
 
 function userCollide(a, b, game) {
