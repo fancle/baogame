@@ -6,36 +6,43 @@ var map = {
 	    y : 10,
 	    itemType : 1,
 	    isItemFloat : true
-	},
-	{
+	},{
 	    type : "itemGate",
 	    x : "max",
 	    y : 10,
 	    itemType : 1,
 	    isItemFloat : true
-	},
-	{
+	},{
 	    type : "itemGate",
 	    x : 14,
 	    y : "max",
-	    itemType : [1,6,7,8],
+	    itemType : [1,6,7,8,8,8],
 	    isItemFloat : true
-	},
-	{
+	},{
+	    type : "itemGate",
+	    x : 14,
+	    y : "max",
+	    itemType : [1,6,7,8,8,8,8,8],
+	    isItemFloat : true
+	},{
 	    type : "itemGate",
 	    x : "random",
 	    y : "random",
 	    itemType : 1,
 	    isItemFloat : true
-	},
-	{
+	},{
 	    type : "itemGate",
 	    x : "random",
 	    y : "random",
 	    itemType : 1,
 	    isItemFloat : true
-	},
-	{
+	},{
+	    type : "itemGate",
+	    x : "random",
+	    y : "random",
+	    itemType : 1,
+	    isItemFloat : true
+	},{
 	    type : "itemGate",
 	    x : "random",
 	    y : "random",

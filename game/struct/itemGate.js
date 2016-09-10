@@ -2,17 +2,35 @@
 
 var C = require('../../static/js/const.js');
 
+// TODO: 这里可以来一个算法，每次找最稀疏的地方来随机
+
 function parseAxis(map, x, y){
     var result = {x:x, y:y};
     if(x == "random" || y == "random"){
-	for (var i = 0; i < 20; i++) {
+	var existedItemGates = [];
+	for(let struct of  map.structs){
+	    if(struct.constructor == ItemGate){
+		existedItemGates.push({x:struct.x, y:struct.y});
+	    }
+	}
+	for (var i = 0; i < 20; i++) { 
 	    var tx = Math.floor(Math.random()*(map.w - 2)) + 1;
 	    var ty = Math.floor(Math.random()*(map.h - 2)) + 1;
-	    if (map.floor[tx] && map.floor[tx][ty]) {
-		result.x = tx;
-		result.y = ty;
-		break;
+	    //	    if (map.floor[tx] && map.floor[tx][ty]) {
+	    var isTooClosed = false;
+	    for(var j = 0; j<existedItemGates.length; j++){
+		//var hypot = Math.hypot(existedItemGates[j].x-tx, existedItemGates[j].y-ty);
+		//console.info("("+tx + ":"+ ty + ") - (" + existedItemGates[j].x + ":"  + existedItemGates[j].y + ")  " + hypot);
+		if(Math.hypot(existedItemGates[j].x-tx, existedItemGates[j].y-ty)<5){
+		    isTooClosed = true;
+		    break;
+		}
 	    }
+	    if(isTooClosed) continue;
+	    result.x = tx;
+	    result.y = ty;
+	    break;
+	    //	    }
 	}
 	if(isNaN(result.x))result.x = 0;
 	if(isNaN(result.y))result.y = 0;

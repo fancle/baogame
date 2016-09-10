@@ -200,7 +200,7 @@ Map.prototype.getData = function () {
     return {
 	floor: this.floor,
 	pilla: this.pilla,
-	structs: structdata,
+	structs: structdata
     };
 }
 
