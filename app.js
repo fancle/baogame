@@ -29,7 +29,7 @@ app.get('/game', function (req, res) {
 });
 //游戏地址
 app.get('/rooms', function (req, res) {
-	res.sendFile(__dirname + '/static/rooms.html');
+	res.sendFile(__dirname + '/static/index.html');
 });
 //管理地址
 app.get('/admin', function (req, res) {
