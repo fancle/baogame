@@ -3,7 +3,7 @@ var url = require('url');
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
-var WebSocketServer = require('ws').Server
+var WebSocketServer = require('ws').Server;
 var wss = new WebSocketServer({server: server});
 var Room = require('./game/room.js');
 
@@ -22,6 +22,10 @@ app.use('/static', express.static('static'));
 //游戏地址
 app.get('/', function (req, res) {
 	res.sendFile(__dirname + '/static/index.html');
+});
+//游戏地址
+app.get('/game', function (req, res) {
+    res.sendFile(__dirname + '/static/game.html');
 });
 //游戏地址
 app.get('/rooms', function (req, res) {
