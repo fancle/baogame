@@ -4,6 +4,7 @@ var map1 = require('./lesson1.js');
 var map2 = require('./lesson2.js');
 var gunmap = require('./gunmapdata.js');
 var drugmap = require('./drugmapdata.js');
+var grenademap = require('./grenademapdata.js');
 
 var MapGlobal = {
     getMapDataByType : function (type){
@@ -15,7 +16,9 @@ var MapGlobal = {
 	    return gunmap;
 	} else if(type == "drugmap"){
 	    return drugmap;
-	} else {
+	} else if(type == "grenademap"){
+	    return grenademap;
+	}else {
 	    return null;
 	}
     },
@@ -29,7 +32,9 @@ var MapGlobal = {
 	    return "枪战地图";
 	} else if(type == "drugmap"){
 	    return "逃生地图";
-	} else {
+	} else if(type == "grenademap"){
+	    return "手雷地图";
+	}else {
 	    return type;
 	}
     }

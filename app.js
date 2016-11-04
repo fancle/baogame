@@ -59,6 +59,7 @@ for (var i = 0; i < (opts.room || 1); i++) {
 }
 Room.createRoom("gunmap",true);
 Room.createRoom("drugmap",true);
+Room.createRoom("grenademap",true);
 
 wss.on('connection', function (ws) {
 	var location = url.parse(ws.upgradeReq.url, true);
