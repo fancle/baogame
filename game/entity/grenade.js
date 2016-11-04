@@ -4,11 +4,11 @@ var Grenade = function (user) {
 	this.creater = user;
 	this.vx = 0;
 	this.vy = 0;
-	this.life = 100;
+	this.life = 60;
 	this.r = 0;
 	this.dead = false;
 	this.game = user.game;
-}
+};
 
 Grenade.prototype.update = function () {
 	this.x += this.vx;
