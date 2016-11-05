@@ -86,12 +86,12 @@ User.prototype.getStatus = function () {
 			if (this.mining > 0) {
 				this.mining--;
 				if (this.mining == 0) {
-					this.game.addMine(this) && this.carryCount--;
+				    this.game.addMine(this) && this.carryCount--;
 				} else {
-					return 'mining';
+				    return 'mining';
 				}
 			}
-			if ((this.upDown || this.downDown) && this.nearPilla) {
+			if ((this.upDown || this.downDown) && this.onFloor && this.nearPilla) {
 				this.onPilla = true;
 				this.onFloor = false;
 				this.vx = 0;
@@ -101,13 +101,13 @@ User.prototype.getStatus = function () {
 			} else if (this.downDown) {
 				this.crawl = true;
 				if (Math.abs(this.vx) < .2) {
-					return  "crawling";
+				    return  "crawling";
 				} else {
-					this.rolling = true;
-					this.rollPoint = 20;
-					if (this.vx > 0) {this.vx += 2}
-					if (this.vx < 0) {this.vx -= 2}
-					return "rolling2";
+				    this.rolling = true;
+				    this.rollPoint = 20;
+				    if (this.vx > 0) {this.vx += 2;}
+				    if (this.vx < 0) {this.vx -= 2;}
+				    return "rolling2";
 				}
 				
 			} else if (this.itemPress && this.vx == 0 && this.carry == Pack.items.mine.id && this.carryCount > 0) {
@@ -121,7 +121,15 @@ User.prototype.getStatus = function () {
 				return "standing";
 			}
 		} else {
-			return "falling";
+		    if(this.upDown && this.downDown && this.nearPilla){
+			this.vy = 0;
+			this.vx = 0;
+			this.onPilla = true;
+			this.pilla = this.nearPilla;
+			this.x = this.pilla.x * C.TW;
+			return "climbing";
+		    }
+		    return "falling";
 		}
 	}
 }

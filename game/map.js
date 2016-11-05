@@ -169,8 +169,8 @@ Map.prototype.onFloor = function (x, y) {
     return this.floor[y][x];
 }
 Map.prototype.nearPilla = function (u) {
-    if (this.onFloor(u.x, u.y) == false) {return false;}
-    if (Math.abs(u.vx) > 1 || Math.abs(u.vy) > 1 || u.dieing) {return false;}
+//    if (this.onFloor(u.x, u.y) == false) {return false;}
+//    if (Math.abs(u.vx) > 1 || Math.abs(u.vy) > 1 || u.dieing) {return false;}
     var x = u.x, y = u.y;
     for (let pilla of this.pilla) {
 	if (Math.abs(x - pilla.x * C.TW) < 8 && y >= pilla.y1*C.TH && y <= pilla.y2*C.TH) {
